@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Media;
+
+
+namespace prototipo1
+{
+    class Program
+    {
+        static void musica()
+        {
+          SoundPlayer player = new SoundPlayer();
+          player.SoundLocation = "C:\\Users\\Enric\\Documents\\IO\\Projecte\\prototipo1\\prototipo1\\Locked Away.wav";
+          player.PlaySync();
+        }
+        static void Main(string[] args)
+        {
+            int accion;
+
+            Console.WriteLine("Que quieres hacer?");
+                   Console.WriteLine("Pulsa uno si quieres reproducir música");
+                   Console.WriteLine("Pulsa dos si quieres reproducir beats");
+            accion = Convert.ToInt32(Console.ReadLine());
+
+            switch (accion)
+            {
+                case 1:
+                    musica();
+                    break;
+             
+            }
+        }
+    }
+}
