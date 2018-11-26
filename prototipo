@@ -9,28 +9,59 @@ namespace prototipo1
 {
     class Program
     {
-        static void musica()
+        static void menu()
         {
-          SoundPlayer player = new SoundPlayer();
-          player.SoundLocation = "C:\\Users\\Enric\\Documents\\IO\\Projecte\\prototipo1\\prototipo1\\Locked Away.wav";
-          player.PlaySync();
-        }
-        static void Main(string[] args)
-        {
-            int accion;
+            int opcion;
 
             Console.WriteLine("Que quieres hacer?");
-                   Console.WriteLine("Pulsa uno si quieres reproducir música");
-                   Console.WriteLine("Pulsa dos si quieres reproducir beats");
-            accion = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Pulsa uno si quieres reproducir música");
+            Console.WriteLine("Pulsa dos si quieres reproducir beats");
+            opcion = Convert.ToInt32(Console.ReadLine());
 
-            switch (accion)
+            switch (opcion)
             {
                 case 1:
                     musica();
                     break;
-             
+                default:
+                    Console.WriteLine("Código no válido");
+                    break;
+
             }
+
+        }
+        static void musica()
+        {
+          SoundPlayer player = new SoundPlayer();
+          player.SoundLocation = "C:\\Users\\Enric\\Documents\\IO\\Projecte\\prototipo1\\prototipo1\\Locked Away.wav";
+          player.Play();
+          int accion;
+          Console.WriteLine("Indique que quiere hacer:");
+          Console.WriteLine("Para cerrar el programa pulse 0");
+          Console.WriteLine("Para buscar otra canción pulse 1");
+          Console.WriteLine("Para volver al menú principal pulse 2");
+          accion=Convert.ToInt32(Console.ReadLine());
+          switch (accion)
+          {
+              case 0:
+                  break;
+              case 1:
+                  musica();
+                  break;
+              case 2:
+                  //Falta parar la canción
+                  menu();
+                  break;
+              default:
+                  Console.WriteLine("El valor introducido no es correcto");
+                  break;
+          }
+          
+        }
+        static void Main(string[] args)
+        {
+            menu();
+            
         }
     }
 }
