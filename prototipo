@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Media;
+using System.IO;
 
 
 namespace prototipo1
@@ -35,30 +36,55 @@ namespace prototipo1
         }
         static void musica()
         {
-          SoundPlayer player = new SoundPlayer();
-          player.SoundLocation = "C:\\Users\\Enric\\Documents\\IO\\Projecte\\prototipo1\\prototipo1\\Locked Away.wav";
-          player.Play();
-          int accion;
-          Console.WriteLine("Indique que quiere hacer:");
-          Console.WriteLine("Para cerrar el programa pulse 0");
-          Console.WriteLine("Para buscar otra canción pulse 1");
-          Console.WriteLine("Para volver al menú principal pulse 2");
-          accion=Convert.ToInt32(Console.ReadLine());
-          switch (accion)
-          {
-              case 0:
-                  break;
-              case 1:
-                  musica();
-                  break;
-              case 2:
-                  //Parar la canción
-                  menu();
-                  break;
-              default:
-                  Console.WriteLine("El valor introducido no es correcto");
-                  break;
-          }
+            string cancion;
+            try
+            {
+                StreamReader canciones = new StreamReader("C:\\Users\\Enric\\Documents\\IO\\Projecte\\prototipo1\\prototipo1\\canciones.txt");
+                string linea;
+                linea = canciones.ReadLine();
+                while (linea != null)
+                {
+                    Console.WriteLine(linea);
+                    linea = canciones.ReadLine();
+                }
+                SoundPlayer player = new SoundPlayer();
+                Console.WriteLine("Escribe la canción que quieres escuchar");
+                cancion = Console.ReadLine();
+                player.SoundLocation = "C:\\Users\\Enric\\Documents\\IO\\Projecte\\prototipo1\\prototipo1\\musica\\" + cancion + ".wav";
+                player.Play();
+                int accion;
+                Console.WriteLine("Indique que quiere hacer:");
+                Console.WriteLine("Para cerrar el programa pulse 0");
+                Console.WriteLine("Para buscar otra canción pulse 1");
+                Console.WriteLine("Para parar la reproducción de la canción actual pulse 2");
+                Console.WriteLine("Para volver al menú principal pulse 3");
+                accion = Convert.ToInt32(Console.ReadLine());
+                switch (accion)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        player.Stop();
+                        musica();
+                        break;
+                    case 2:
+                        player.Stop();
+                        break;
+                    case 3:
+                        //Parar la canción
+                        player.Stop();
+                        menu();
+                        break;
+                    default:
+                        Console.WriteLine("El valor introducido no es correcto");
+                        break;
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("No se ha encontrado el archivo");
+                Console.ReadLine();
+            }
           
         }
         static void beep()
@@ -91,3 +117,4 @@ namespace prototipo1
         }
     }
 }
+
