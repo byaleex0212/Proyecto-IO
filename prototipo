@@ -15,13 +15,16 @@ namespace prototipo1
 
             Console.WriteLine("Que quieres hacer?");
             Console.WriteLine("Pulsa uno si quieres reproducir música");
-            Console.WriteLine("Pulsa dos si quieres reproducir beats");
+            Console.WriteLine("Pulsa dos si quieres reproducir beeps");
             opcion = Convert.ToInt32(Console.ReadLine());
 
             switch (opcion)
             {
                 case 1:
                     musica();
+                    break;
+                case 2:
+                    beep();
                     break;
                 default:
                     Console.WriteLine("Código no válido");
@@ -49,7 +52,7 @@ namespace prototipo1
                   musica();
                   break;
               case 2:
-                  //Falta parar la canción
+                  //Parar la canción
                   menu();
                   break;
               default:
@@ -57,6 +60,29 @@ namespace prototipo1
                   break;
           }
           
+        }
+        static void beep()
+        {
+            int frec,dur;
+            Console.WriteLine("Introduce la frecuencia en la que queires repdocuir el beep");
+            Console.WriteLine("Recuerda que debe estar entre 37 y 32767 Hz");
+            frec = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Introduce la duración del beep en segundos");
+            dur = Convert.ToInt32(Console.ReadLine());   
+            if (frec < 37 || frec > 32767)
+            {
+                Console.WriteLine("No se puede reproducir en esta frecuencia, prueba de nuevo");
+                beep();
+            }
+            if (dur < 0)
+            {
+                Console.WriteLine("El tiempo no puede ser inferior a 0, prueba de nuevo");
+                beep();
+            }
+            else
+                Console.Beep(frec, dur * 1000);
+
+
         }
         static void Main(string[] args)
         {
