@@ -1,0 +1,1 @@
+http://eidavid.com/2016/05/obtener-archivos-de-un-directorio-con-c-c-sharp/
