@@ -79,11 +79,11 @@ namespace prototipo1
         {
             ListaUsuarios milista = new ListaUsuarios();
             int res = leerUsuarios(milista);
+            int opcion=2;
             if (res == -1)
                 Console.WriteLine("Fichero no encontrado");
             else
             {
-                int opcion = 2;
                 while (opcion != 0)
                 {
                     Console.WriteLine("Opciones:");
@@ -135,26 +135,7 @@ namespace prototipo1
                 Console.WriteLine("Adios");
             }
             Console.ReadLine();
-            int opcion;
-
-            Console.WriteLine("¿Qué quieres hacer?");
-            Console.WriteLine("Pulsa uno si quieres reproducir música.");
-            Console.WriteLine("Pulsa dos si quieres reproducir beeps.");
-            opcion = Convert.ToInt32(Console.ReadLine());
-
-            switch (opcion)
-            {
-                case 1:
-                    musica();
-                    break;
-                case 2:
-                    beep();
-                    break;
-                default:
-                    Console.WriteLine("Código no válido.");
-                    break;
-
-            }
+            
 
         }
         static void musica()
