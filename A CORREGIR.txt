@@ -1,0 +1,6 @@
+Que el usuario no tenga que introducir el nombre exacto de la canción
+Dar más detalles al usuario sobre lo que tiene que introducir
+Hacer que teclas reproduzcan beeps 
+Poco amigable en general
+acceso try catch (exception)
+Corregir notificacion error si alguien modifica el archivo de usuarios (poner "Formato incorrecto")
