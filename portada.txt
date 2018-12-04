@@ -1,8 +1,0 @@
-            Console.WriteLine("          __^__                                      __^__ ");
-            Console.WriteLine("         ( ___ )------------------------------------( ___ )");
-            Console.WriteLine("          |   |                                      |   | ");
-            Console.WriteLine("          |   |             PROYECTO IO              |   | ");
-            Console.WriteLine("          |___|                                      |___| ");
-            Console.WriteLine("         (_____)------------------------------------(_____)");
-            Console.WriteLine();
-            Console.WriteLine();
