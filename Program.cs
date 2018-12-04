@@ -1,0 +1,375 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Media;
+using System.IO;
+using WMPLib;
+
+
+namespace prototipo1
+{
+    class Program
+    {
+        class registro
+        {
+            public string usuario;
+            public string contraseña;
+        }
+        class ListaUsuarios
+        {
+            public registro[] usuarios = new registro[100];
+            public int num = 0;
+        }
+        static void escribirUsuarios(ListaUsuarios lista) //Por pantalla
+        {
+            Console.Clear();
+            Console.WriteLine("Estos son los usuarios disponibles");
+            int i = 0;
+            while (i < lista.num)
+            {
+                registro registro = lista.usuarios[i];
+                Console.WriteLine("Usuario: {0}, Contraseña: {1}", registro.usuario, registro.contraseña);
+                i++;
+            }
+            Console.ReadLine();
+            Console.Clear();
+        }
+        static int ponUsuario(ListaUsuarios lista, registro u)
+        //Añade una aplicaciaón móvil a la lista
+        //Retorna un 0 si ok y un -1 si la lista está llena
+        {
+            if (lista.num < 100)
+            {
+
+                lista.usuarios[lista.num] = u;
+                lista.num = lista.num + 1;
+                return 0;
+            }
+            else
+                return -1;
+        }
+
+        static int leerUsuarios(ListaUsuarios lista)
+        {
+            try
+            {
+                StreamReader doc = new StreamReader("C:\\Users\\Daniel\\Desktop\\PROYECTO\\PROYECTO\\nuevosusuarios.txt");
+                //int n = Convert.ToInt32(doc.ReadLine());
+                string s = doc.ReadLine();
+                int i = 0;
+                int cont = 0;
+                while (s != null)
+                {
+                    cont++;
+                    s = doc.ReadLine();
+                }
+                StreamReader doc1 = new StreamReader("C:\\Users\\Daniel\\Desktop\\PROYECTO\\PROYECTO\\nuevosusuarios.txt");
+                while (i <cont)
+                {
+                    registro u = new registro();
+                    string linea = doc1.ReadLine();
+                    string[] trozos = linea.Split(' ');
+                    u.usuario = trozos[0];
+                    u.contraseña = trozos[1];
+                    lista.usuarios[i] = u;
+                    i++;
+                }
+                lista.num = cont;
+                doc.Close();
+                doc1.Close();
+                return 0;
+            }
+            catch (FileNotFoundException)
+            {
+                return -1;
+            }
+
+        }
+        static void menu()
+        {
+            Console.Clear();
+            ListaUsuarios milista = new ListaUsuarios();
+            int res = leerUsuarios(milista);
+            int opcion = 2;
+            if (res == -1)
+                Console.WriteLine("Fichero no encontrado");
+            else
+            {
+                while (opcion != 0)
+                {
+                    Console.WriteLine("Opciones:");
+                    Console.WriteLine("0: Acabar");
+                    Console.WriteLine("1: Mostrar usuarios en pantalla");
+                    Console.WriteLine("2: Reproduce una canción.");
+                    Console.WriteLine("3: Reproduce beeps.");
+                    Console.WriteLine("Elige una opcion");
+                    opcion = Convert.ToInt32(Console.ReadLine());
+
+                    switch (opcion)
+                    {
+                        case 0:
+                            Environment.Exit(0);
+                            break;
+                        case 1:
+                            escribirUsuarios(milista);
+                            break;
+                        case 2:
+                            musica();
+                            break;
+                        case 3:
+                            beep();
+                            break;
+                        default:
+                            Console.WriteLine("Código no válido.");
+                            break;
+
+                        
+                    }
+                }
+
+                Console.WriteLine("Adios");
+            }
+            Console.ReadLine();
+
+
+        }
+        static void musica()
+        {
+            Console.Clear();
+            string cancion = " ";
+            StreamReader canciones = new StreamReader("C:\\Users\\Daniel\\Desktop\\PROYECTO\\musica\\canciones.txt");
+            string linea;
+            linea = canciones.ReadLine();
+            while (linea != null)
+            {
+                Console.WriteLine(linea);
+                linea = canciones.ReadLine();
+            }
+            Console.WriteLine("Escribe la canción que quieres escuchar:");
+            cancion = Console.ReadLine();
+            if (System.IO.File.Exists("C:\\Users\\Daniel\\Desktop\\PROYECTO\\musica" + cancion + ".mp3"))
+            {
+                WindowsMediaPlayer wplayer = new WindowsMediaPlayer();
+                wplayer.URL = "C:\\Users\\Daniel\\Desktop\\PROYECTO\\musica\\" + cancion + ".mp3";
+                wplayer.controls.play();
+                int accion;
+                Console.WriteLine("Indique qué quiere hacer:");
+                Console.WriteLine("Para cerrar el programa pulse 0.");
+                Console.WriteLine("Para buscar otra canción pulse 1.");
+                Console.WriteLine("Para parar la reproducción de la canción actual pulse 2.");
+                Console.WriteLine("Para volver al menú principal pulse 3.");
+                accion = Convert.ToInt32(Console.ReadLine());
+                switch (accion)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        wplayer.controls.stop();
+                        musica();
+                        break;
+                    case 2:
+                        wplayer.controls.stop();
+                        break;
+                    case 3:
+                        wplayer.controls.stop();
+                        menu();
+                        break;
+                    default:
+                        Console.WriteLine("El valor introducido no es correcto.");
+                        break;
+                }
+
+            }
+            else if (System.IO.File.Exists("C:\\Users\\Daniel\\Desktop\\PROYECTO\\musica\\" + cancion + ".wav"))
+            {
+                SoundPlayer player = new SoundPlayer();
+                player.SoundLocation = "C:\\Users\\Daniel\\Desktop\\PROYECTO\\musica\\" + cancion + ".wav";
+                player.Play();
+                int accion;
+                Console.WriteLine("Indique qué quiere hacer:");
+                Console.WriteLine("Para cerrar el programa pulse 0.");
+                Console.WriteLine("Para buscar otra canción pulse 1.");
+                Console.WriteLine("Para parar la reproducción de la canción actual pulse 2.");
+                Console.WriteLine("Para volver al menú principal pulse 3.");
+                accion = Convert.ToInt32(Console.ReadLine());
+                switch (accion)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        player.Stop();
+                        musica();
+                        break;
+                    case 2:
+                        player.Stop();
+                        break;
+                    case 3:
+                        //Parar la canción
+                        player.Stop();
+                        menu();
+                        break;
+                    default:
+                        Console.WriteLine("El valor introducido no es correcto.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Archivo no encontrado");
+                Console.ReadKey();
+                menu();
+            }
+
+        }
+        static void beep()
+        {
+            Console.Clear();
+            int frec, dur;
+            Console.WriteLine("Introduce la frecuencia en la que quieres repdocuir el beep:");
+            Console.WriteLine("(Recuerda que debe de estar entre 37 y 32767 Hz)");
+            frec = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Introduce la duración del beep en segundos:");
+            dur = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+            if (frec < 37 || frec > 32767)
+            {
+                Console.WriteLine("No se puede reproducir en esta frecuencia, prueba de nuevo.");
+                beep();
+            }
+            if (dur < 0)
+            {
+                Console.WriteLine("El tiempo no puede ser inferior a 0, prueba de nuevo.");
+                beep();
+            }
+            else
+                Console.Beep(frec, dur * 1000);
+            int accion2;
+            Console.WriteLine("Indique qué quiere hacer:");
+            Console.WriteLine("Para cerrar el programa pulse 0.");
+            Console.WriteLine("Para reproducir otro beep pulse 1.");
+            Console.WriteLine("Para volver al menú principal pulse 2.");
+            accion2 = Convert.ToInt32(Console.ReadLine());
+            switch (accion2)
+            {
+                case 0:
+                    break;
+                case 1:
+                    beep();
+                    break;
+                case 2:
+                    menu();
+                    break;
+                default:
+                    Console.WriteLine("El valor introducido no es correcto.");
+                    menu();
+                    break;
+            }
+
+        }
+        static void Main(string[] args)
+        {
+
+            inicio();
+
+        }
+        static void inicio()
+        {
+            int accion;
+            Console.WriteLine("1 -> ACCEDER");
+            Console.WriteLine("2 -> REGISTRAR");
+            accion = Convert.ToInt32(Console.ReadLine());
+            switch (accion)
+            {
+                case 1: acceso();
+                    break;
+                case 2: entrada();
+                    break;
+                default: break;
+            }
+
+        }
+        static void acceso()
+        {
+            Console.Clear();
+            StreamReader documento = new StreamReader("C:\\Users\\Daniel\\Desktop\\PROYECTO\\PROYECTO\\nuevosusuarios.txt");
+            string usuario;
+            string usr;
+            string contraseña;
+            string pass;
+            string linea;
+            Boolean encontrado = false;
+            Boolean existe = true;
+            Console.WriteLine("Introduzca un usuario:");
+            usuario = Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("Introduzca una contraseña:");
+            contraseña = Console.ReadLine();
+            while ((encontrado == false) && (existe == true))
+            {
+                linea = documento.ReadLine(); ;
+                if (linea != null)
+                {
+                    string[] palabras = linea.Split(' ');
+                    usr = palabras[0];
+                    pass = palabras[1];
+                    if (usr == usuario && pass == contraseña)
+                        encontrado = true;
+                }
+                if (linea == null)
+                    existe = false;
+            }
+            Console.Clear();
+            if (encontrado == true)
+            {
+                Console.WriteLine("Acceso permitido.");
+                Console.ReadLine();
+                menu();
+            }
+            if (existe == false)
+            {
+                Console.WriteLine("Nombre de usuario y/o contraseña incorrectos.");
+                Console.ReadLine();
+                Console.Clear();
+                inicio();
+            }
+            Console.ReadLine();
+            documento.Close();
+        }
+        static void entrada()
+        {
+            Console.Clear();
+            ListaUsuarios milista = new ListaUsuarios();
+            Console.WriteLine("Escribe usuario y contraseña (SEPARADOS POR UN ESPACIO):");
+            int i = 0, res = leerUsuarios(milista);
+            string linea = Console.ReadLine();
+            string[] trozos = linea.Split(' ');
+            registro nuevo = new registro();
+            nuevo.usuario = trozos[0];
+            nuevo.contraseña = trozos[1];
+            ponUsuario(milista, nuevo);
+            res = ponUsuario(milista, nuevo);
+            Console.Clear();
+            if (res == 0)
+            {
+                StreamWriter nuevalista = new StreamWriter("C:\\Users\\Daniel\\Desktop\\PROYECTO\\PROYECTO\\nuevosusuarios.txt");
+                while (i < milista.num)
+                {
+                    registro registro = milista.usuarios[i];
+                    nuevalista.WriteLine(registro.usuario + " " + registro.contraseña);
+                    // Console.WriteLine("Usuario: {0}, Contraseña: {1}", registro.usuario, registro.contraseña);
+                    i++;
+                }
+                Console.WriteLine("Añadido");
+                nuevalista.Close();
+                Console.ReadLine();
+                Console.Clear();
+                inicio();
+            }
+            else
+                Console.WriteLine("Lista llena");
+            inicio();
+        }
+    }
+}
